@@ -2,14 +2,17 @@ package com.pdefence;
 
 import com.pdefence.contoller.UserController;
 import com.pdefence.entity.User;
-//import com.pdefence.repository.UserRepository;
-import com.pdefence.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
-import java.util.concurrent.ExecutionException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -34,4 +37,17 @@ public class ProjectDefenceApplication {
         };
     }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        final CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("*"));
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter((CorsConfigurationSource) source);
+    }
 }
