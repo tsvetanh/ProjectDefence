@@ -14,11 +14,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @CrossOrigin(origins="https://project-defence.vercel.app/users")
     @GetMapping("/users")
     public List<User> getUsers() throws ExecutionException, InterruptedException {
         return userService.getAllUsers();
     }
 
+    @CrossOrigin(origins="https://project-defence.vercel.app/users")
     @PostMapping("/users")
     public String createUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
         return userService.saveUserDetails(user);
