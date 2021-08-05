@@ -45,17 +45,17 @@ public class ProjectDefenceApplication extends SpringBootServletInitializer {
         SpringApplication.run(ProjectDefenceApplication.class, args);
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        final CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter((CorsConfigurationSource) source);
-    }
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//
+//        final CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);
+//        config.setAllowedOrigins(Collections.singletonList("*"));
+//        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+//        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//
+//        source.registerCorsConfiguration("/**", config);
+//        return new CorsFilter((CorsConfigurationSource) source);
+//    }
 }
