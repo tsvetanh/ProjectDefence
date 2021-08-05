@@ -22,20 +22,20 @@ public class ProjectDefenceApplication {
         SpringApplication.run(ProjectDefenceApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner init(UserController userController) {
-        return args -> {
-            Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
-                User user = new User(name, name.toLowerCase() + "@domain.com");
-                try {
-                    userController.createUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            userController.getUsers().forEach(System.out::println);
-        };
-    }
+//    @Bean
+//    CommandLineRunner init(UserController userController) {
+//        return args -> {
+//            Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
+//                User user = new User(name, name.toLowerCase() + "@domain.com");
+//                try {
+//                    userController.createUser(user);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//            userController.getUsers().forEach(System.out::println);
+//        };
+//    }
 
     @Bean
     public CorsFilter corsFilter() {

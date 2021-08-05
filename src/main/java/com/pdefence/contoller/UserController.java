@@ -18,6 +18,8 @@ public class UserController {
     public List<User> getUsers() throws ExecutionException, InterruptedException {
         return userService.getAllUsers();
     }
+
+
     @PostMapping("/users")
     public String createUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
         return userService.saveUserDetails(user);
