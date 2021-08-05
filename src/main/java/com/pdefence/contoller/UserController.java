@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="https://project-defence.vercel.app/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
     @GetMapping("/users")
     public List<User> getUsers() throws ExecutionException, InterruptedException {
-        return (List<User>) userService.getAllUsers();
+        return userService.getAllUsers();
     }
 
     @PostMapping("/users")
