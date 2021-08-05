@@ -5,6 +5,8 @@ import com.pdefence.entity.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -16,11 +18,8 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-public class ProjectDefenceApplication {
+public class ProjectDefenceApplication extends SpringBootServletInitializer {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ProjectDefenceApplication.class, args);
-    }
 
 //    @Bean
 //    CommandLineRunner init(UserController userController) {
@@ -36,6 +35,15 @@ public class ProjectDefenceApplication {
 //            userController.getUsers().forEach(System.out::println);
 //        };
 //    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ProjectDefenceApplication .class);
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(ProjectDefenceApplication.class, args);
+    }
 
     @Bean
     public CorsFilter corsFilter() {
