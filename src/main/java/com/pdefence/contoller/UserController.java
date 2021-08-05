@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
