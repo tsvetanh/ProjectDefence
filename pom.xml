@@ -11,12 +11,12 @@
   </parent>  
   <groupId>com.pdefence</groupId>  
   <artifactId>project-defence</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>  
   <name>project-defence</name>  
   <description>Demo project for Spring Boot</description>  
   <properties> 
-    <java.version>11</java.version> 
+    <java.version>8</java.version>
   </properties>  
   <dependencies> 
     <dependency> 
@@ -63,7 +63,27 @@
     </dependency> 
   </dependencies>  
   <build> 
-    <plugins> 
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>copy</goal></goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.github.jsimone</groupId>
+                  <artifactId>webapp-runner</artifactId>
+                  <version>9.0.13.0</version>
+                  <destFileName>webapp-runner.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin> 
         <groupId>org.springframework.boot</groupId>  
         <artifactId>spring-boot-maven-plugin</artifactId> 
