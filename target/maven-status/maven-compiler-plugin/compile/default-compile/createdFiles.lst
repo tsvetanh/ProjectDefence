@@ -1,5 +1,0 @@
-com\pdefence\ProjectDefenceApplication.class
-com\pdefence\entity\User.class
-com\pdefence\contoller\UserController.class
-com\pdefence\service\FirebaseInitialize.class
-com\pdefence\service\UserService.class
