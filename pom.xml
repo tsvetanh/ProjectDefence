@@ -11,7 +11,7 @@
   </parent>  
   <groupId>com.pdefence</groupId>  
   <artifactId>project-defence</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>  
   <name>project-defence</name>  
   <description>Demo project for Spring Boot</description>  
