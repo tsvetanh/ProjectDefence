@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <parent> 
+    <groupId>org.springframework.boot</groupId>  
+    <artifactId>spring-boot-starter-parent</artifactId>  
+    <version>2.5.3</version>  
+    <relativePath/>  
+    <!-- lookup parent from repository --> 
+  </parent>  
+  <groupId>com.pdefence</groupId>  
+  <artifactId>project-defence</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>  
+  <name>project-defence</name>  
+  <description>Demo project for Spring Boot</description>  
+  <properties> 
+    <java.version>11</java.version> 
+  </properties>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.springframework.boot</groupId>  
+      <artifactId>spring-boot-starter</artifactId> 
+    </dependency>  
+    <!--        <dependency>-->  
+    <!--            <groupId>mysql</groupId>-->  
+    <!--            <artifactId>mysql-connector-java</artifactId>-->  
+    <!--            <scope>runtime</scope>-->  
+    <!--        </dependency>-->  
+    <dependency> 
+      <groupId>org.springframework.boot</groupId>  
+      <artifactId>spring-boot-starter-web</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.springframework.boot</groupId>  
+      <artifactId>spring-boot-starter-test</artifactId>  
+      <scope>test</scope> 
+    </dependency>  
+    <!--        <dependency>-->  
+    <!--            <groupId>org.springframework.boot</groupId>-->  
+    <!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->  
+    <!--        </dependency>-->  
+    <dependency> 
+      <groupId>javax.persistence</groupId>  
+      <artifactId>javax.persistence-api</artifactId>  
+      <version>2.2</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.3.14.RELEASE</version>
+    </dependency>
+    <dependency> 
+      <groupId>com.google.firebase</groupId>  
+      <artifactId>firebase-admin</artifactId>  
+      <version>6.11.0</version> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <groupId>org.springframework.boot</groupId>  
+        <artifactId>spring-boot-maven-plugin</artifactId> 
+      </plugin>  
+      <plugin>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-webapp-maven-plugin</artifactId>
+        <version>1.14.0</version>
+        <configuration>
+          <schemaVersion>v2</schemaVersion>
+          <subscriptionId>86d09672-81ec-46d5-8e92-f19a187a64fe</subscriptionId>
+          <resourceGroup>project-defence-1628146340368-rg</resourceGroup>
+          <appName>project-defence-1628146340368</appName>
+          <pricingTier>F1</pricingTier>
+          <region>westeurope</region>
+          <runtime>
+            <os>Windows</os>
+            <javaVersion>Java 11</javaVersion>
+            <webContainer>Java SE</webContainer>
+          </runtime>
+          <deployment>
+            <resources>
+              <resource>
+                <directory>${project.basedir}/target</directory>
+                <includes>
+                  <include>*.jar</include>
+                </includes>
+              </resource>
+            </resources>
+          </deployment>
+        </configuration>
+      </plugin>
+    </plugins> 
+  </build> 
+</project>
