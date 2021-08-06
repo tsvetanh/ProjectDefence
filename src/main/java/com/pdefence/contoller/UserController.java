@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@CrossOrigin
+@CrossOrigin()
 public class UserController {
     @Autowired
     private UserService userService;
@@ -21,8 +21,8 @@ public class UserController {
 
 
     @PostMapping("/users/register")
-    public void registerUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
-         userService.saveUserDetails(user);
+    public User registerUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
+         return userService.saveUserDetails(user);
     }
 //
 //    @PostMapping("/users")
@@ -30,9 +30,14 @@ public class UserController {
 //        userRepository.save(user);
 //    }
 
-    @GetMapping("/getUserDetails")
-    public User getUser(@RequestParam String name ) throws InterruptedException, ExecutionException {
-        return userService.getUserDetails(name);
+
+    @PostMapping("/users/login")
+    public User getUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
+        return userService.getUserDetails(user);
+    }
+
+    @PostMapping("/users/logout")
+    public void logout() {
     }
 
     @PutMapping("/updateUser")

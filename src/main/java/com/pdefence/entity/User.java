@@ -13,7 +13,8 @@ public class User {
     private long id;
     private String name;
     private String email;
-    private String number;
+    private String tel;
+    private String password;
 
     public User() {
     }
@@ -47,12 +48,30 @@ public class User {
         this.email = email;
     }
 
-
-    public String getNumber() {
-        return number;
+    public String getTel() {
+        return tel;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setTel(String number) {
+        this.tel = number;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", tel='" + tel + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
