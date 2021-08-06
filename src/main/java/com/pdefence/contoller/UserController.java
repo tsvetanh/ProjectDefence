@@ -20,9 +20,9 @@ public class UserController {
     }
 
 
-    @PostMapping("/users")
-    public String createUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
-        return userService.saveUserDetails(user);
+    @PostMapping("/users/register")
+    public void registerUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
+         userService.saveUserDetails(user);
     }
 //
 //    @PostMapping("/users")

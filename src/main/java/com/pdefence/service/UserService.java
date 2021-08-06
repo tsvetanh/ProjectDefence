@@ -15,15 +15,16 @@ import java.util.concurrent.ExecutionException;
 public class UserService {
     public static final String COL_NAME = "users";
 
-    public String saveUserDetails(User user) throws InterruptedException, ExecutionException {
+    public void saveUserDetails(User user) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getName()).set(user);
-        return collectionsApiFuture.get().getUpdateTime().toString();
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getEmail()).set(user);
+//        return
+//        collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public User getUserDetails(String name) throws InterruptedException, ExecutionException {
+    public User getUserDetails(String email) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(name);
+        DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(email);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         User user = null;
