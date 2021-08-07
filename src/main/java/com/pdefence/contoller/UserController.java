@@ -40,8 +40,8 @@ public class UserController {
     public void logout() {
     }
 
-    @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
+    @PutMapping("/users/profile")
+    public User updateUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
         return userService.updateUserDetails(user);
     }
     @DeleteMapping("/deleteUser")

@@ -60,10 +60,14 @@ public class UserService {
         return toReturn;
     }
 
-    public String updateUserDetails(User person) throws InterruptedException, ExecutionException {
+    public User updateUserDetails(User user) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(person.getName()).set(person);
-        return collectionsApiFuture.get().getUpdateTime().toString();
+        System.out.println(user);
+        User dbUser = dbFirestore.collection(COL_NAME).document(user.getEmail()).get().get().toObject(User.class);
+        dbUser.setName(user.getName());
+        dbUser.setTel(user.getTel());
+        dbFirestore.collection(COL_NAME).document(user.getEmail()).set(dbUser);
+        return dbUser;
     }
 
     public String deleteUser(String name) {
