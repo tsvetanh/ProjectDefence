@@ -22,7 +22,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public User registerUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
-         return userService.saveUserDetails(user);
+         return userService.registerUser(user, false);
     }
 //
 //    @PostMapping("/users")

@@ -4,8 +4,8 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import com.pdefence.entity.User;
+import com.pdefence.entity.enums.Role;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,15 @@ import java.util.concurrent.ExecutionException;
 public class UserService {
     public static final String COL_NAME = "users";
 
-    public User saveUserDetails(User user) throws InterruptedException, ExecutionException {
+    public User registerUser(User user, boolean admin) throws InterruptedException, ExecutionException {
         try {
             Firestore dbFirestore = FirestoreClient.getFirestore();
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getEmail()).set(user);
+            user.setRoles(new ArrayList<>());
+            user.addRole(Role.USER);
+            if (admin){
+                user.addRole(Role.ADMIN);
+            }
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getEmail()).create(user);
 
         } catch (Exception e) {
             System.out.println(e.toString());

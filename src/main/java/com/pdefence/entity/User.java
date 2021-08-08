@@ -1,20 +1,20 @@
 package com.pdefence.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.pdefence.entity.enums.Role;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class User extends BaseEntity{
     private String name;
     private String email;
     private String tel;
     private String password;
+    private List<Role> roles;
 
     public User() {
     }
@@ -22,14 +22,6 @@ public class User {
     public User(String name, String email) {
         this.setName(name);
         this.setEmail(email);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -64,14 +56,28 @@ public class User {
         this.password = password;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role userRole) {
+        this.roles.add(userRole);
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", tel='" + tel + '\'' +
                 ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }
