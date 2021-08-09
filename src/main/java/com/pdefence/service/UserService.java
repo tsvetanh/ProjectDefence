@@ -23,7 +23,7 @@ public class UserService {
             if (admin){
                 user.addRole(Role.ADMIN);
             }
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getEmail()).create(user);
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getEmail()).set(user);
 
         } catch (Exception e) {
             System.out.println(e.toString());

@@ -8,8 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-public class User extends BaseEntity{
+public class User {
     private String name;
     private String email;
     private String tel;
@@ -56,8 +55,6 @@ public class User extends BaseEntity{
         this.password = password;
     }
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany
     public List<Role> getRoles() {
         return roles;
     }
