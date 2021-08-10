@@ -40,6 +40,12 @@ public class UserController {
     public void logout() {
     }
 
+    @PostMapping("/users/get")
+    public User getUserByEmail(@RequestBody String email) throws ExecutionException, InterruptedException {
+        System.out.println(email);
+        return userService.getUserByEmail(email);
+    }
+
     @PutMapping("/users/profile")
     public User updateUser(@RequestBody User user ) throws InterruptedException, ExecutionException {
         return userService.updateUserDetails(user);

@@ -3,6 +3,7 @@ package com.pdefence.service;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.pdefence.entity.Request;
 import com.pdefence.entity.User;
 import com.pdefence.entity.enums.Role;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,13 @@ public class UserService {
         dbUser.setTel(user.getTel());
         dbFirestore.collection(COL_NAME).document(user.getEmail()).set(dbUser);
         return dbUser;
+    }
+
+    public User getUserByEmail(String email) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        User user = db.collection(COL_NAME).document(email).get().get().toObject(User.class);
+        System.out.println(user);
+        return user;
     }
 
     public String deleteUser(String name) {
