@@ -68,7 +68,6 @@ public class UserService {
 
     public User updateUserDetails(User user) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        System.out.println(user);
         User dbUser = dbFirestore.collection(COL_NAME).document(user.getEmail()).get().get().toObject(User.class);
         dbUser.setName(user.getName());
         dbUser.setTel(user.getTel());
@@ -79,7 +78,6 @@ public class UserService {
     public User getUserByEmail(String email) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
         User user = db.collection(COL_NAME).document(email).get().get().toObject(User.class);
-        System.out.println(user);
         return user;
     }
 

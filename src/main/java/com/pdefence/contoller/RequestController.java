@@ -1,11 +1,8 @@
 package com.pdefence.contoller;
 
-import com.google.api.client.util.DateTime;
-import com.google.gson.JsonObject;
 import com.pdefence.entity.Request;
-import com.pdefence.entity.User;
+import com.pdefence.entity.enums.Status;
 import com.pdefence.service.RequestService;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,7 @@ public class RequestController {
         request.setDate(date);
         request.setCreatedBy(map.get("email").toString());
         request.setHour((Integer.parseInt(data.get("hour").toString())));
+        request.setStatus(Status.ACTIVE);
         requestService.saveRequest(request);
     }
 
@@ -51,8 +49,20 @@ public class RequestController {
         return requestService.getRequestByDate(ndate);
     }
 
+//    @PostMapping("/getById")
+//    public Request getRequestById(@RequestBody String id) throws ExecutionException, InterruptedException, JSONException {
+//        JSONObject obj = new JSONObject(id);
+//        String jsonDate = obj.getString("id");
+//        return requestService.getRequestById(jsonDate);
+//    }
+
+    @PostMapping("/cancel")
+    public Request cancel(@RequestBody String id) throws ExecutionException, InterruptedException, JSONException {
+        return requestService.setStatusToRequest(id, Status.CANCELLED);
+    }
+
     @PostMapping("/getByEmail")
-    public List<Request> getAllRequestsByEmail(@RequestBody String email) throws ParseException, ExecutionException, InterruptedException, JSONException {
+    public List<Request> getAllRequestsByEmail(@RequestBody String email) throws ExecutionException, InterruptedException {
         return requestService.getRequestByEmail(email);
     }
 
