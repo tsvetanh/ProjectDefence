@@ -22,12 +22,13 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200", "https://project-defence.vercel.app"}, allowCredentials = "true")
+@RequestMapping("/request")
 public class RequestController {
     @Autowired
     private RequestService requestService;
 
-    @PostMapping("/request/save")
-    public void saveRequest(@RequestBody HashMap map) throws InterruptedException, ExecutionException, ParseException {
+    @PostMapping("/save")
+    public void saveRequest(@RequestBody HashMap map) throws ParseException {
 
         Map data = (Map) map.get("data");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -41,13 +42,23 @@ public class RequestController {
         requestService.saveRequest(request);
     }
 
-    @PostMapping("/request/getByDate")
+    @PostMapping("/getByDate")
     public List<Request> getAllRequestsByDate(@RequestBody String date) throws ParseException, ExecutionException, InterruptedException, JSONException {
         JSONObject obj = new JSONObject(date);
         String jsonDate = obj.getString("date");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date ndate = df.parse(jsonDate);
         return requestService.getRequestByDate(ndate);
+    }
+
+    @PostMapping("/getByEmail")
+    public List<Request> getAllRequestsByEmail(@RequestBody String email) throws ParseException, ExecutionException, InterruptedException, JSONException {
+        return requestService.getRequestByEmail(email);
+    }
+
+    @GetMapping("/all")
+    public List<Request> getAllRequests() throws ExecutionException, InterruptedException {
+        return requestService.getAllRequests();
     }
 
 }
