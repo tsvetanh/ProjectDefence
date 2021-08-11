@@ -34,7 +34,7 @@ public class RequestService {
             dbFirestore.collection(COL_NAME).document(requestId).set(request);
 
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -62,15 +62,16 @@ public class RequestService {
 
     public List<Request> getAllRequests() throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        CollectionReference collectionReference = dbFirestore.collection(COL_NAME);
-        QuerySnapshot queryList = collectionReference.get().get();
+        List<Request> requests = dbFirestore.collection(COL_NAME).whereGreaterThanOrEqualTo("date", new Date()).get().get().toObjects(Request.class);
 
-        List<QueryDocumentSnapshot> docsList = queryList.getDocuments();
-        List<Request> requests = new ArrayList<>();
+        this.sortRequests(requests);
+        return requests;
+    }
 
-        for (QueryDocumentSnapshot queryDocumentSnapshot : docsList) {
-            requests.add(queryDocumentSnapshot.toObject(Request.class));
-        }
+    public List<Request> getArchivedRequests() throws ExecutionException, InterruptedException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        List<Request> requests = dbFirestore.collection(COL_NAME).whereLessThanOrEqualTo("date", new Date()).get().get().toObjects(Request.class);
+
         this.sortRequests(requests);
         return requests;
     }
@@ -88,4 +89,6 @@ public class RequestService {
         dbFirestore.collection(COL_NAME).document(id).set(request);
         return null;
     }
+
+
 }
