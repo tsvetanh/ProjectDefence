@@ -5,7 +5,7 @@ import com.pdefence.entity.enums.Status;
 
 import java.util.Date;
 
-public class Request {
+public class Request implements Comparable<Request>{
     private String id;
     private String type;
     private Date date;
@@ -75,4 +75,8 @@ public class Request {
                 '}';
     }
 
+    @Override
+    public int compareTo(Request o) {
+        return this.getDate().compareTo(o.getDate());
+    }
 }

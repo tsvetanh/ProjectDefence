@@ -61,6 +61,11 @@ public class RequestController {
         return requestService.setStatusToRequest(id, Status.CANCELLED);
     }
 
+    @PostMapping("/process")
+    public Request process(@RequestBody String id) throws ExecutionException, InterruptedException, JSONException {
+        return requestService.setStatusToRequest(id, Status.DONE);
+    }
+
     @PostMapping("/getByEmail")
     public List<Request> getAllRequestsByEmail(@RequestBody String email) throws ExecutionException, InterruptedException {
         return requestService.getRequestByEmail(email);

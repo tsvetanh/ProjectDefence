@@ -17,10 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static java.time.LocalTime.now;
@@ -46,19 +43,21 @@ public class RequestService {
     public List<Request> getRequestByDate(Date date) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
         List<Request> requests = db.collection(COL_NAME).whereEqualTo("date", date).get().get().toObjects(Request.class);
+        this.sortRequests(requests);
         return requests;
     }
 
     public List<Request> getRequestByEmail(String email) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
         List<Request> requests = db.collection(COL_NAME).whereEqualTo("createdBy", email).get().get().toObjects(Request.class);
+        this.sortRequests(requests);
         return requests;
     }
 
     public Request getRequestById(String id) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
-        Request requests = db.collection(COL_NAME).whereEqualTo("id", id).get().get().toObjects(Request.class).get(0);
-        return requests;
+        Request request = db.collection(COL_NAME).whereEqualTo("id", id).get().get().toObjects(Request.class).get(0);
+        return request;
     }
 
     public List<Request> getAllRequests() throws ExecutionException, InterruptedException {
@@ -67,12 +66,18 @@ public class RequestService {
         QuerySnapshot queryList = collectionReference.get().get();
 
         List<QueryDocumentSnapshot> docsList = queryList.getDocuments();
-        List<Request> toReturn = new ArrayList<>();
+        List<Request> requests = new ArrayList<>();
 
         for (QueryDocumentSnapshot queryDocumentSnapshot : docsList) {
-            toReturn.add(queryDocumentSnapshot.toObject(Request.class));
+            requests.add(queryDocumentSnapshot.toObject(Request.class));
         }
-        return toReturn;
+        this.sortRequests(requests);
+        return requests;
+    }
+
+    private void sortRequests(List<Request> toReturn) {
+        toReturn.sort(Comparator.comparing(Request::getHour));
+        toReturn.sort(Comparator.comparing(Request::getDate));
     }
 
 
