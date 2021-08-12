@@ -1,26 +1,13 @@
 package com.pdefence.service;
 
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.pdefence.entity.Request;
-import com.pdefence.entity.User;
-import com.pdefence.entity.enums.Role;
 import com.pdefence.entity.enums.Status;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-
-import static java.time.LocalTime.now;
 
 @Service
 public class RequestService {
@@ -37,7 +24,6 @@ public class RequestService {
             e.printStackTrace();
         }
     }
-
 
 
     public List<Request> getRequestByDate(Date date) throws ExecutionException, InterruptedException {
@@ -61,20 +47,54 @@ public class RequestService {
     }
 
     public List<Request> getAllRequests() throws ExecutionException, InterruptedException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        List<Request> requests = dbFirestore.collection(COL_NAME).whereGreaterThanOrEqualTo("date", new Date()).get().get().toObjects(Request.class);
+        Firestore db = FirestoreClient.getFirestore();
+        Query query = db.collection(COL_NAME).whereGreaterThanOrEqualTo("date", new Date()).orderBy("date").orderBy("hour").limit(5);
 
-        this.sortRequests(requests);
-        return requests;
+        return query.get().get().toObjects(Request.class);
     }
 
     public List<Request> getArchivedRequests() throws ExecutionException, InterruptedException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        List<Request> requests = dbFirestore.collection(COL_NAME).whereLessThanOrEqualTo("date", new Date()).get().get().toObjects(Request.class);
+        Firestore db = FirestoreClient.getFirestore();
+        Query query = db.collection(COL_NAME).whereLessThanOrEqualTo("date", new Date()).orderBy("date").orderBy("hour").limit(5);
 
+        return query.get().get().toObjects(Request.class);
+    }
+
+
+    public List<Request> nextPage(Request last, boolean archive) throws ExecutionException, InterruptedException {
+
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference ref = db.collection(COL_NAME);
+        DocumentSnapshot snapshot = ref.document(last.getId()).get().get();
+
+        Query query;
+        if (archive) {
+            query = ref.whereLessThanOrEqualTo("date", new Date()).orderBy("date").orderBy("hour").limit(5).startAfter(snapshot);
+        } else {
+            query = ref.whereGreaterThanOrEqualTo("date", new Date()).orderBy("date").orderBy("hour").limit(5).startAfter(snapshot);
+        }
+
+        List<Request> requests = query.get().get().toObjects(Request.class);
+        return requests;
+    }
+
+    public List<Request> prevPage(Request first, boolean archive) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference ref = db.collection(COL_NAME);
+        DocumentSnapshot snapshot = ref.document(first.getId()).get().get();
+
+        Query query;
+        if (archive) {
+            query = ref.whereLessThanOrEqualTo("date", new Date()).orderBy("date", Query.Direction.DESCENDING).orderBy("hour", Query.Direction.DESCENDING).limit(5).startAfter(snapshot);
+        } else {
+            query = ref.whereGreaterThanOrEqualTo("date", new Date()).orderBy("date", Query.Direction.DESCENDING).orderBy("hour", Query.Direction.DESCENDING).limit(5).startAfter(snapshot);
+        }
+
+        List<Request> requests = query.get().get().toObjects(Request.class);
         this.sortRequests(requests);
         return requests;
     }
+
 
     private void sortRequests(List<Request> toReturn) {
         toReturn.sort(Comparator.comparing(Request::getHour));
@@ -83,12 +103,12 @@ public class RequestService {
 
 
     public Request setStatusToRequest(String id, Status status) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+
         Request request = this.getRequestById(id);
         request.setStatus(status);
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        dbFirestore.collection(COL_NAME).document(id).set(request);
+        db.collection(COL_NAME).document(id).set(request);
         return null;
     }
-
 
 }

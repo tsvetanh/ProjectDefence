@@ -30,6 +30,7 @@ public class RequestController {
         Map data = (Map) map.get("data");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date = df.parse(data.get("date").toString());
+        date.setDate(date.getDate()+1);
 
         Request request = new Request();
         request.setType(data.get("type").toString());
@@ -49,12 +50,12 @@ public class RequestController {
         return requestService.getRequestByDate(ndate);
     }
 
-//    @PostMapping("/getById")
-//    public Request getRequestById(@RequestBody String id) throws ExecutionException, InterruptedException, JSONException {
-//        JSONObject obj = new JSONObject(id);
-//        String jsonDate = obj.getString("id");
-//        return requestService.getRequestById(jsonDate);
-//    }
+    @PostMapping("/getById")
+    public Request getRequestById(@RequestBody String id) throws ExecutionException, InterruptedException, JSONException {
+        JSONObject obj = new JSONObject(id);
+        String jsonDate = obj.getString("id");
+        return requestService.getRequestById(jsonDate);
+    }
 
     @PostMapping("/cancel")
     public Request cancel(@RequestBody String id) throws ExecutionException, InterruptedException {
@@ -74,6 +75,25 @@ public class RequestController {
     @PostMapping("/getByEmail")
     public List<Request> getAllRequestsByEmail(@RequestBody String email) throws ExecutionException, InterruptedException {
         return requestService.getRequestByEmail(email);
+    }
+
+    @PostMapping("/nextPage")
+    public List<Request> nextPage(@RequestBody Request last) throws ExecutionException, InterruptedException {
+        return requestService.nextPage(last, false);
+    }
+
+    @PostMapping("/prevPage")
+    public List<Request> prevPage(@RequestBody Request first) throws ExecutionException, InterruptedException {
+        return requestService.prevPage(first, false);
+    }
+    @PostMapping("/archNextPage")
+    public List<Request> archNextPage(@RequestBody Request last) throws ExecutionException, InterruptedException {
+        return requestService.nextPage(last, true);
+    }
+
+    @PostMapping("/archPrevPage")
+    public List<Request> archPrevPage(@RequestBody Request first) throws ExecutionException, InterruptedException {
+        return requestService.prevPage(first, true);
     }
 
     @GetMapping("/all")
