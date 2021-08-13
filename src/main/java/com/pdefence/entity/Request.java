@@ -12,6 +12,7 @@ public class Request implements Comparable<Request>{
     private String createdBy;
     private int hour;
     private Status status;
+    private String description;
 
     public Request() {
     }
@@ -64,14 +65,25 @@ public class Request implements Comparable<Request>{
         this.status = status;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
     @Override
     public String toString() {
         return "Request{" +
-                "type='" + type + '\'' +
+                "id='" + id + '\'' +
+                ", type='" + type + '\'' +
                 ", date=" + date +
                 ", createdBy='" + createdBy + '\'' +
                 ", hour=" + hour +
                 ", status=" + status +
+                ", description='" + description + '\'' +
                 '}';
     }
 

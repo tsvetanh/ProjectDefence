@@ -28,7 +28,7 @@ public class RequestService {
 
     public List<Request> getRequestByDate(Date date) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
-        List<Request> requests = db.collection(COL_NAME).whereEqualTo("date", date).get().get().toObjects(Request.class);
+        List<Request> requests = db.collection(COL_NAME).whereEqualTo("date", date).whereNotEqualTo("status", "CANCELLED").get().get().toObjects(Request.class);
         this.sortRequests(requests);
         return requests;
     }
@@ -102,13 +102,24 @@ public class RequestService {
     }
 
 
-    public Request setStatusToRequest(String id, Status status) throws ExecutionException, InterruptedException {
+    public void setStatusToRequest(String id, Status status) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
 
         Request request = this.getRequestById(id);
         request.setStatus(status);
         db.collection(COL_NAME).document(id).set(request);
-        return null;
     }
 
+    public List<Integer> getStatusCount() throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+
+        List<Integer> list = new ArrayList<>();
+        int activeCount = db.collection(COL_NAME).whereGreaterThanOrEqualTo("date", new Date()).whereEqualTo("status", "ACTIVE").get().get().size();
+        list.add(activeCount);
+        int doneCount = db.collection(COL_NAME).whereGreaterThanOrEqualTo("date", new Date()).whereEqualTo("status", "DONE").get().get().size();
+        list.add(doneCount);
+        int cancelledCount = db.collection(COL_NAME).whereGreaterThanOrEqualTo("date", new Date()).whereEqualTo("status", "CANCELLED").get().get().size();
+        list.add(cancelledCount);
+        return list;
+    }
 }

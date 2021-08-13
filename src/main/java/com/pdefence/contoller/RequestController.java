@@ -58,18 +58,18 @@ public class RequestController {
     }
 
     @PostMapping("/cancel")
-    public Request cancel(@RequestBody String id) throws ExecutionException, InterruptedException {
-        return requestService.setStatusToRequest(id, Status.CANCELLED);
+    public void cancel(@RequestBody String id) throws ExecutionException, InterruptedException {
+        requestService.setStatusToRequest(id, Status.CANCELLED);
     }
 
     @PostMapping("/process")
-    public Request process(@RequestBody String id) throws ExecutionException, InterruptedException {
-        return requestService.setStatusToRequest(id, Status.DONE);
+    public void process(@RequestBody String id) throws ExecutionException, InterruptedException {
+        requestService.setStatusToRequest(id, Status.DONE);
     }
 
     @PostMapping("/activate")
-    public Request activate(@RequestBody String id) throws ExecutionException, InterruptedException {
-        return requestService.setStatusToRequest(id, Status.ACTIVE);
+    public void activate(@RequestBody String id) throws ExecutionException, InterruptedException {
+        requestService.setStatusToRequest(id, Status.ACTIVE);
     }
 
     @PostMapping("/getByEmail")
@@ -104,6 +104,11 @@ public class RequestController {
     @GetMapping("/archived")
     public List<Request> getArchivedRequests() throws ExecutionException, InterruptedException {
         return requestService.getArchivedRequests();
+    }
+
+    @GetMapping("statusCount")
+    public List<Integer> getStatusCount() throws ExecutionException, InterruptedException {
+        return requestService.getStatusCount();
     }
 
 }
