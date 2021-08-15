@@ -35,7 +35,7 @@ public class RequestService {
 
     public List<Request> getRequestByEmail(String email) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
-        List<Request> requests = db.collection(COL_NAME).whereEqualTo("createdBy", email).get().get().toObjects(Request.class);
+        List<Request> requests = db.collection(COL_NAME).whereEqualTo("createdBy", email).whereNotEqualTo("status", "CANCELLED").get().get().toObjects(Request.class);
         this.sortRequests(requests);
         return requests;
     }
@@ -55,7 +55,7 @@ public class RequestService {
 
     public List<Request> getArchivedRequests() throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
-        Query query = db.collection(COL_NAME).whereLessThanOrEqualTo("date", new Date()).orderBy("date").orderBy("hour").limit(5);
+        Query query = db.collection(COL_NAME).whereLessThanOrEqualTo("date", new Date()).orderBy("date", Query.Direction.ASCENDING).orderBy("hour", Query.Direction.ASCENDING).limit(5);
 
         return query.get().get().toObjects(Request.class);
     }

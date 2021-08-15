@@ -38,6 +38,7 @@ public class RequestController {
         request.setCreatedBy(map.get("email").toString());
         request.setHour((Integer.parseInt(data.get("hour").toString())));
         request.setStatus(Status.ACTIVE);
+        request.setDescription(data.get("description").toString());
         requestService.saveRequest(request);
     }
 
