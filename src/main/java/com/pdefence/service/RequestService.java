@@ -35,7 +35,7 @@ public class RequestService {
 
     public List<Request> getRequestByEmail(String email) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
-        List<Request> requests = db.collection(COL_NAME).whereEqualTo("createdBy", email).whereNotEqualTo("status", "CANCELLED").get().get().toObjects(Request.class);
+        List<Request> requests = db.collection(COL_NAME).whereEqualTo("createdBy", email).get().get().toObjects(Request.class);
         this.sortRequests(requests);
         return requests;
     }
